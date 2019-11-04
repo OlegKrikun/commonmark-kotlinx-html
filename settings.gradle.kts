@@ -1,5 +1,5 @@
 include(
-    "renderer"
+    "kotlinx-html"
 )
 
 rootProject.name = "commonmark-kotlinx-html"

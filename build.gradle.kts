@@ -6,6 +6,9 @@ plugins {
     id("com.jfrog.bintray") version "1.8.4" apply false
 }
 
+group = "ru.krikun.commonmark"
+version = "0.0.0"
+
 val properties = properties("bintray.properties")
 val bintrayUser: String = properties.getProperty("user")
 val bintrayKey: String = properties.getProperty("key")
@@ -15,8 +18,8 @@ subprojects
     .onEach { it.repositories { jcenter() } }
     .filter { it.name != "kotlinx-html-test" }
     .forEachAfterEvaluate { subproject ->
-        subproject.version = "0.0.0"
-        subproject.group = "ru.krikun.commonmark"
+        subproject.group = group
+        subproject.version = version
 
         subproject.apply(plugin = "com.jfrog.bintray")
         subproject.apply(plugin = "org.gradle.maven-publish")

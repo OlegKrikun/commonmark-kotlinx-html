@@ -9,4 +9,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm")
 
     implementation("com.atlassian.commonmark:commonmark-ext-gfm-strikethrough")
+
+    testImplementation(project(":kotlinx-html-test"))
 }

@@ -11,7 +11,7 @@ class KotlinxHtmlRenderer private constructor(builder: Builder) {
 
     fun render(node: Node, output: FlowContent) = RendererContext(nodeRendererFactories, output).render(node)
 
-    interface KotlinxHtmlRendererExtension {
+    interface KotlinxHtmlRendererExtension : Extension {
         fun extend(rendererBuilder: Builder)
     }
 

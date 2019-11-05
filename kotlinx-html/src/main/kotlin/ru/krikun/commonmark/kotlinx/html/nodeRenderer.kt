@@ -55,7 +55,7 @@ interface KotlinxHtmlNodeRendererContext {
 }
 
 class KotlinxHtmlCoreNodeRenderer(
-    context: KotlinxHtmlNodeRendererContext
+    private val context: KotlinxHtmlNodeRendererContext
 ) : AbstractVisitor(), NodeRenderer {
     private var currentOrderedList: OL? = null
     private var currentUnorderedList: UL? = null
@@ -176,6 +176,15 @@ class KotlinxHtmlCoreNodeRenderer(
     override fun visit(strongEmphasis: StrongEmphasis) = output.strong { visitChildren(strongEmphasis) }
 
     override fun visit(text: Text) = output.text(text.literal)
+
+    override fun visitChildren(parent: Node) {
+        var node = parent.firstChild
+        while (node != null) {
+            val next = node.next
+            context.render(node)
+            node = next
+        }
+    }
 
     private fun FencedCodeBlock.language() = info.takeIf { !it.isNullOrEmpty() }?.let {
         when (val space = it.indexOf(" ")) {

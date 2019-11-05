@@ -13,6 +13,7 @@ subprojects {
 
             add("implementation", "com.atlassian.commonmark:commonmark:0.13.0")
             add("implementation", "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:0.13.0")
+            add("implementation", "com.atlassian.commonmark:commonmark-ext-gfm-tables:0.13.0")
 
             add("implementation", "junit:junit:4.12")
         }

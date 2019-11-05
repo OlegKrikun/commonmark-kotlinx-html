@@ -1,4 +1,4 @@
-package ru.krikun.commonmark.kotlinx.html.ext.gfm.tables
+package ru.krikun.commonmark.kotlinx.html.tables
 
 import kotlinx.html.TBODY
 import kotlinx.html.TD

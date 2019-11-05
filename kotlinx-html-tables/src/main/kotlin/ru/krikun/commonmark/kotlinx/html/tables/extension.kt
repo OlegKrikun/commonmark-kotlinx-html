@@ -1,4 +1,4 @@
-package ru.krikun.commonmark.kotlinx.html.ext.gfm.tables
+package ru.krikun.commonmark.kotlinx.html.tables
 
 import org.commonmark.ext.gfm.tables.internal.TableBlockParser
 import org.commonmark.parser.Parser

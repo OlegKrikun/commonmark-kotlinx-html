@@ -1,4 +1,4 @@
-package ru.krikun.commonmark.kotlinx.html.ext.gfm.strikethrough
+package ru.krikun.commonmark.kotlinx.html.tables
 
 import kotlinx.html.FlowContent
 import org.commonmark.Extension
@@ -8,14 +8,21 @@ import ru.krikun.commonmark.kotlinx.html.KotlinxHtmlRenderer
 
 import ru.krikun.commonmark.kotlinx.html.RenderingTestCase
 
-class StrikethroughTest : RenderingTestCase() {
-    private val extensions: Set<Extension> = setOf(StrikethroughKotlinxHtmlExtension())
+class TablesTest : RenderingTestCase() {
+    private val extensions: Set<Extension> = setOf(TablesKotlinxHtmlExtension())
     private val parser: Parser = Parser.builder().extensions(extensions).build()
     private val renderer = KotlinxHtmlRenderer.Builder().extensions(extensions).build()
 
     @Test
-    fun strikethrough() {
-        assertRendering("~~foo~~", "<div><p><del>foo</del></p></div>")
+    fun tables() {
+        assertRendering(
+            """
+            Abc|Def 
+            ---|---
+             1 | 2
+            """.trimIndent(),
+            "<div><table><thead><tr><th>Abc</th><th>Def</th></tr></thead><tbody><tr><td>1</td><td>2</td></tr></tbody></table></div>"
+        );
     }
 
     override fun render(flowContent: FlowContent, source: String) {

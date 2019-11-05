@@ -1,4 +1,4 @@
-package ru.krikun.commonmark.kotlinx.html.ext.gfm.strikethrough
+package ru.krikun.commonmark.kotlinx.html.strikethrough
 
 import kotlinx.html.del
 import org.commonmark.ext.gfm.strikethrough.Strikethrough

@@ -45,7 +45,7 @@ subprojects
             pkg.apply {
                 repo = "maven"
                 name = subproject.name
-                setLicenses("Apache2")
+                setLicenses("Apache-2.0")
                 websiteUrl = "https://github.com/OlegKrikun/commonmark-kotlinx-html"
                 issueTrackerUrl = "https://github.com/OlegKrikun/commonmark-kotlinx-html/issues"
                 vcsUrl = "https://github.com/OlegKrikun/commonmark-kotlinx-html.git"

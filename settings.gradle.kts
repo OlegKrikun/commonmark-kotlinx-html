@@ -1,7 +1,7 @@
 include(
     "kotlinx-html",
-    "kotlinx-html-ext-gfm-strikethrough",
-    "kotlinx-html-ext-gfm-tables",
+    "kotlinx-html-strikethrough",
+    "kotlinx-html-tables",
     "kotlinx-html-test"
 )
 

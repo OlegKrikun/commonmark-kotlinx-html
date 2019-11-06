@@ -3,8 +3,8 @@ package ru.krikun.commonmark.kotlinx.html
 import kotlinx.html.A
 import kotlinx.html.FlowContent
 import kotlinx.html.IMG
+import kotlinx.html.LI
 import kotlinx.html.OL
-import kotlinx.html.UL
 import kotlinx.html.attributesMapOf
 import kotlinx.html.blockQuote
 import kotlinx.html.br
@@ -17,7 +17,6 @@ import kotlinx.html.h4
 import kotlinx.html.h5
 import kotlinx.html.h6
 import kotlinx.html.hr
-import kotlinx.html.li
 import kotlinx.html.p
 import kotlinx.html.pre
 import kotlinx.html.strong
@@ -57,9 +56,6 @@ interface KotlinxHtmlNodeRendererContext {
 class KotlinxHtmlCoreNodeRenderer(
     private val context: KotlinxHtmlNodeRendererContext
 ) : AbstractVisitor(), NodeRenderer {
-    private var currentOrderedList: OL? = null
-    private var currentUnorderedList: UL? = null
-
     private val output = context.output
 
     override fun getNodeTypes() = setOf(
@@ -89,11 +85,7 @@ class KotlinxHtmlCoreNodeRenderer(
 
     override fun visit(blockQuote: BlockQuote) = output.blockQuote { visitChildren(blockQuote) }
 
-    override fun visit(bulletList: BulletList) = output.ul {
-        currentUnorderedList = this
-        visitChildren(bulletList)
-        currentUnorderedList = null
-    }
+    override fun visit(bulletList: BulletList) = output.ul { visitChildren(bulletList) }
 
     override fun visit(code: Code) = output.code { +code.literal }
 
@@ -151,10 +143,7 @@ class KotlinxHtmlCoreNodeRenderer(
         A(attrs, output.consumer).visit { visitChildren(link) }
     }
 
-    override fun visit(listItem: ListItem) {
-        currentOrderedList?.apply { li { visitChildren(listItem) } }
-        currentUnorderedList?.apply { li { visitChildren(listItem) } }
-    }
+    override fun visit(listItem: ListItem) = LI(attributesMapOf(), output.consumer).visit { visitChildren(listItem) }
 
     override fun visit(orderedList: OrderedList) {
         val attrs = when {
@@ -162,11 +151,7 @@ class KotlinxHtmlCoreNodeRenderer(
             else -> attributesMapOf()
         }
 
-        OL(attrs, output.consumer).visit {
-            currentOrderedList = this
-            visitChildren(orderedList)
-            currentOrderedList = null
-        }
+        OL(attrs, output.consumer).visit { visitChildren(orderedList) }
     }
 
     override fun visit(paragraph: Paragraph) = output.p { visitChildren(paragraph) }

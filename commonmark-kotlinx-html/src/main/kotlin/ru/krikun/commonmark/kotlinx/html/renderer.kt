@@ -1,7 +1,8 @@
 package ru.krikun.commonmark.kotlinx.html
 
-import kotlinx.html.FlowContent
 import kotlinx.html.HTMLTag
+import kotlinx.html.Tag
+import kotlinx.html.TagConsumer
 import org.commonmark.Extension
 import org.commonmark.internal.renderer.NodeRendererMap
 import org.commonmark.node.Node
@@ -11,7 +12,7 @@ class KotlinxHtmlRenderer private constructor(builder: Builder) {
     private val nodeRendererFactories = builder.nodeRendererFactories + coreRendererFactory
     private val attributeProviderFactories = builder.attributeProviderFactories.toList()
 
-    fun render(node: Node, output: FlowContent) = RendererContext(
+    fun render(node: Node, output: TagConsumer<*>) = RendererContext(
         nodeRendererFactories,
         attributeProviderFactories,
         output
@@ -43,7 +44,7 @@ class KotlinxHtmlRenderer private constructor(builder: Builder) {
     private class RendererContext(
         nodeRendererFactories: List<KotlinxHtmlNodeRendererFactory>,
         attributeProviderFactories: List<KotlinxHtmlAttributeProviderFactory>,
-        override val output: FlowContent
+        override val output: TagConsumer<*>
     ) : KotlinxHtmlNodeRendererContext, KotlinxHtmlAttributeProviderContext {
         private val nodeRendererMap = NodeRendererMap()
         private val attributeProviderList = attributeProviderFactories.map { it(this) }
@@ -58,7 +59,7 @@ class KotlinxHtmlRenderer private constructor(builder: Builder) {
     }
 }
 
-fun FlowContent.render(
+fun Tag.render(
     node: Node,
     renderer: KotlinxHtmlRenderer = KotlinxHtmlRenderer.Builder().build()
-) = renderer.render(node, this)
+) = renderer.render(node, consumer)

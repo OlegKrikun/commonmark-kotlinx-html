@@ -5,7 +5,6 @@ import kotlinx.html.BLOCKQUOTE
 import kotlinx.html.BR
 import kotlinx.html.CODE
 import kotlinx.html.EM
-import kotlinx.html.FlowContent
 import kotlinx.html.H1
 import kotlinx.html.H2
 import kotlinx.html.H3
@@ -20,6 +19,7 @@ import kotlinx.html.OL
 import kotlinx.html.P
 import kotlinx.html.PRE
 import kotlinx.html.STRONG
+import kotlinx.html.TagConsumer
 import kotlinx.html.UL
 import kotlinx.html.attributesMapOf
 import org.commonmark.node.AbstractVisitor
@@ -50,7 +50,7 @@ import kotlinx.html.visit as kotlinxVisit
 typealias KotlinxHtmlNodeRendererFactory = (context: KotlinxHtmlNodeRendererContext) -> NodeRenderer
 
 interface KotlinxHtmlNodeRendererContext {
-    val output: FlowContent
+    val output: TagConsumer<*>
     fun render(node: Node)
     fun extendAttributes(node: Node, tag: HTMLTag)
 }
@@ -58,7 +58,7 @@ interface KotlinxHtmlNodeRendererContext {
 class KotlinxHtmlCoreNodeRenderer(
     private val context: KotlinxHtmlNodeRendererContext
 ) : AbstractVisitor(), NodeRenderer {
-    private val output = context.output
+    private val consumer = context.output
 
     override fun getNodeTypes() = setOf(
         BlockQuote::class.java,
@@ -85,72 +85,72 @@ class KotlinxHtmlCoreNodeRenderer(
 
     override fun render(node: Node) = node.accept(this)
 
-    override fun visit(node: BlockQuote) = BLOCKQUOTE(attributesMapOf(), output.consumer).visitChildren(node)
+    override fun visit(node: BlockQuote) = BLOCKQUOTE(attributesMapOf(), consumer).visitChildren(node)
 
-    override fun visit(node: BulletList) = UL(attributesMapOf(), output.consumer).visitChildren(node)
+    override fun visit(node: BulletList) = UL(attributesMapOf(), consumer).visitChildren(node)
 
-    override fun visit(node: Code) = CODE(attributesMapOf(), output.consumer).visit(node) { +node.literal }
+    override fun visit(node: Code) = CODE(attributesMapOf(), consumer).visit(node) { +node.literal }
 
     override fun visit(document: Document) = visitChildren(document)
 
-    override fun visit(node: Emphasis) = EM(attributesMapOf(), output.consumer).visitChildren(node)
+    override fun visit(node: Emphasis) = EM(attributesMapOf(), consumer).visitChildren(node)
 
-    override fun visit(node: FencedCodeBlock) = PRE(attributesMapOf(), output.consumer).visit(node) {
-        CODE(attributesMapOf(), output.consumer).visit(node) {
+    override fun visit(node: FencedCodeBlock) = PRE(attributesMapOf(), consumer).visit(node) {
+        CODE(attributesMapOf(), consumer).visit(node) {
             node.language()?.let { attributes["class"] = it }
             +node.literal
         }
     }
 
-    override fun visit(node: HardLineBreak) = BR(attributesMapOf(), output.consumer).visit(node)
+    override fun visit(node: HardLineBreak) = BR(attributesMapOf(), consumer).visit(node)
 
     override fun visit(node: Heading) = when (node.level) {
-        1 -> H1(attributesMapOf(), output.consumer).visitChildren(node)
-        2 -> H2(attributesMapOf(), output.consumer).visitChildren(node)
-        3 -> H3(attributesMapOf(), output.consumer).visitChildren(node)
-        4 -> H4(attributesMapOf(), output.consumer).visitChildren(node)
-        5 -> H5(attributesMapOf(), output.consumer).visitChildren(node)
-        6 -> H6(attributesMapOf(), output.consumer).visitChildren(node)
+        1 -> H1(attributesMapOf(), consumer).visitChildren(node)
+        2 -> H2(attributesMapOf(), consumer).visitChildren(node)
+        3 -> H3(attributesMapOf(), consumer).visitChildren(node)
+        4 -> H4(attributesMapOf(), consumer).visitChildren(node)
+        5 -> H5(attributesMapOf(), consumer).visitChildren(node)
+        6 -> H6(attributesMapOf(), consumer).visitChildren(node)
         else -> error("unsupported heading: ${node.level}")
     }
 
-    override fun visit(node: ThematicBreak) = HR(attributesMapOf(), output.consumer).visit(node)
+    override fun visit(node: ThematicBreak) = HR(attributesMapOf(), consumer).visit(node)
 
-    override fun visit(node: HtmlInline) = output.text(node.literal)
+    override fun visit(node: HtmlInline) = consumer.onTagContent(node.literal)
 
-    override fun visit(node: HtmlBlock) = output.text(node.literal)
+    override fun visit(node: HtmlBlock) = consumer.onTagContent(node.literal)
 
     override fun visit(node: Image) {
         val altTextVisitor = AltTextVisitor()
         node.accept(altTextVisitor)
         val alt = altTextVisitor.altText
 
-        IMG(attributesMapOf("alt", alt, "src", node.destination), output.consumer).visit(node) {
+        IMG(attributesMapOf("alt", alt, "src", node.destination), consumer).visit(node) {
             node.title?.let { attributes["title"] = node.title }
         }
     }
 
-    override fun visit(node: IndentedCodeBlock) = PRE(attributesMapOf(), output.consumer).visit(node) {
-        CODE(attributesMapOf(), output.consumer).visit(node) { +node.literal }
+    override fun visit(node: IndentedCodeBlock) = PRE(attributesMapOf(), consumer).visit(node) {
+        CODE(attributesMapOf(), consumer).visit(node) { +node.literal }
     }
 
-    override fun visit(node: Link) = A(attributesMapOf("href", node.destination), output.consumer).visitChildren(node) {
+    override fun visit(node: Link) = A(attributesMapOf("href", node.destination), consumer).visitChildren(node) {
         node.title?.let { attributes["title"] = node.title }
     }
 
-    override fun visit(node: ListItem) = LI(attributesMapOf(), output.consumer).visitChildren(node)
+    override fun visit(node: ListItem) = LI(attributesMapOf(), consumer).visitChildren(node)
 
-    override fun visit(node: OrderedList) = OL(attributesMapOf(), output.consumer).visitChildren(node) {
+    override fun visit(node: OrderedList) = OL(attributesMapOf(), consumer).visitChildren(node) {
         node.startNumber.takeIf { it != -1 }?.let { attributes["start"] = it.toString() }
     }
 
-    override fun visit(node: Paragraph) = P(attributesMapOf(), output.consumer).visitChildren(node)
+    override fun visit(node: Paragraph) = P(attributesMapOf(), consumer).visitChildren(node)
 
-    override fun visit(node: SoftLineBreak) = output.text("\n")
+    override fun visit(node: SoftLineBreak) = consumer.onTagContent("\n")
 
-    override fun visit(node: StrongEmphasis) = STRONG(attributesMapOf(), output.consumer).visitChildren(node)
+    override fun visit(node: StrongEmphasis) = STRONG(attributesMapOf(), consumer).visitChildren(node)
 
-    override fun visit(node: Text) = output.text(node.literal)
+    override fun visit(node: Text) = consumer.onTagContent(node.literal)
 
     override fun visitChildren(parent: Node) {
         var node = parent.firstChild

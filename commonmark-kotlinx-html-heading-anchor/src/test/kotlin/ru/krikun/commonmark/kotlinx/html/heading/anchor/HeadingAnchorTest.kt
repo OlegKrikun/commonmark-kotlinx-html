@@ -1,12 +1,11 @@
-package ru.krikun.commonmark.kotlinx.html.ins
+package ru.krikun.commonmark.kotlinx.html.heading.anchor
 
-import kotlinx.html.FlowContent
+import kotlinx.html.TagConsumer
 import org.commonmark.Extension
 import org.commonmark.parser.Parser
 import org.junit.Test
 import ru.krikun.commonmark.kotlinx.html.KotlinxHtmlRenderer
 import ru.krikun.commonmark.kotlinx.html.RenderingTestCase
-import ru.krikun.commonmark.kotlinx.html.heading.anchor.HeadingAnchorKotlinxHtmlExtension
 
 class HeadingAnchorTest : RenderingTestCase() {
     private val extensions: Set<Extension> = setOf(HeadingAnchorKotlinxHtmlExtension.Builder().build())
@@ -15,10 +14,10 @@ class HeadingAnchorTest : RenderingTestCase() {
 
     @Test
     fun `heading anchor`() {
-        assertRendering("# Heading", "<div><h1 id=\"heading\">Heading</h1></div>")
+        assertRendering("# Heading", "<h1 id=\"heading\">Heading</h1>")
     }
 
-    override fun render(flowContent: FlowContent, source: String) {
-        renderer.render(parser.parse(source), flowContent)
+    override fun render(output: TagConsumer<*>, source: String) {
+        renderer.render(parser.parse(source), output)
     }
 }

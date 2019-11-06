@@ -1,11 +1,10 @@
 package ru.krikun.commonmark.kotlinx.html.strikethrough
 
-import kotlinx.html.FlowContent
+import kotlinx.html.TagConsumer
 import org.commonmark.Extension
 import org.commonmark.parser.Parser
 import org.junit.Test
 import ru.krikun.commonmark.kotlinx.html.KotlinxHtmlRenderer
-
 import ru.krikun.commonmark.kotlinx.html.RenderingTestCase
 
 class StrikethroughTest : RenderingTestCase() {
@@ -15,10 +14,10 @@ class StrikethroughTest : RenderingTestCase() {
 
     @Test
     fun strikethrough() {
-        assertRendering("~~foo~~", "<div><p><del>foo</del></p></div>")
+        assertRendering("~~foo~~", "<p><del>foo</del></p>")
     }
 
-    override fun render(flowContent: FlowContent, source: String) {
-        renderer.render(parser.parse(source), flowContent)
+    override fun render(output: TagConsumer<*>, source: String) {
+        renderer.render(parser.parse(source), output)
     }
 }

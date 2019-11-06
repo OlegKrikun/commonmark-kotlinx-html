@@ -1,6 +1,6 @@
 package ru.krikun.commonmark.kotlinx.html.ins
 
-import kotlinx.html.FlowContent
+import kotlinx.html.TagConsumer
 import org.commonmark.Extension
 import org.commonmark.parser.Parser
 import org.junit.Test
@@ -14,10 +14,10 @@ class InsTest : RenderingTestCase() {
 
     @Test
     fun ins() {
-        assertRendering("++foo++", "<div><p><ins>foo</ins></p></div>")
+        assertRendering("++foo++", "<p><ins>foo</ins></p>")
     }
 
-    override fun render(flowContent: FlowContent, source: String) {
-        renderer.render(parser.parse(source), flowContent)
+    override fun render(output: TagConsumer<*>, source: String) {
+        renderer.render(parser.parse(source), output)
     }
 }

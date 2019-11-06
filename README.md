@@ -27,11 +27,14 @@ dependencies {
 ### Usage
 
 ```kotlin
-val stream: FlowContent = ... // Create kotlinx.html stream.
-val document: Document = ... // Parse document using commonmark-java parser.
-val renderer = KotlinxHtmlRenderer.Builder().build()
+createHTML().html {
+    body {
+        val document: Document = ... // Parse document using commonmark-java parser.
+        val renderer = KotlinxHtmlRenderer.Builder().build()
 
-renderer.render(document, stream)
+        renderer.render(document, stream)
+    }
+} 
 ```
 
 or use kotlin extension function:

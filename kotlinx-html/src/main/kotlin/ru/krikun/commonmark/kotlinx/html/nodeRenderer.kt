@@ -96,10 +96,10 @@ class KotlinxHtmlCoreNodeRenderer(
     override fun visit(node: Emphasis) = EM(attributesMapOf(), output.consumer).visitChildren(node)
 
     override fun visit(node: FencedCodeBlock) = PRE(attributesMapOf(), output.consumer).visit(node) {
-        when (val lang = node.language()) {
-            null -> CODE(attributesMapOf(), output.consumer)
-            else -> CODE(attributesMapOf("class", lang), output.consumer)
-        }.visit(node) { +node.literal }
+        CODE(attributesMapOf(), output.consumer).visit(node) {
+            node.language()?.let { attributes["class"] = it }
+            +node.literal
+        }
     }
 
     override fun visit(node: HardLineBreak) = BR(attributesMapOf(), output.consumer).visit(node)
@@ -124,36 +124,24 @@ class KotlinxHtmlCoreNodeRenderer(
         val altTextVisitor = AltTextVisitor()
         node.accept(altTextVisitor)
         val alt = altTextVisitor.altText
-        val attrs = when {
-            node.title != null -> attributesMapOf("alt", alt, "src", node.destination, "title", node.title)
-            else -> attributesMapOf("alt", alt, "src", node.destination)
-        }
 
-        IMG(attrs, output.consumer).visit(node)
+        IMG(attributesMapOf("alt", alt, "src", node.destination), output.consumer).visit(node) {
+            node.title?.let { attributes["title"] = node.title }
+        }
     }
 
     override fun visit(node: IndentedCodeBlock) = PRE(attributesMapOf(), output.consumer).visit(node) {
         CODE(attributesMapOf(), output.consumer).visit(node) { +node.literal }
     }
 
-    override fun visit(node: Link) {
-        val attrs = when {
-            node.title != null -> attributesMapOf("href", node.destination, "title", node.title)
-            else -> attributesMapOf("href", node.destination)
-        }
-
-        A(attrs, output.consumer).visitChildren(node)
+    override fun visit(node: Link) = A(attributesMapOf("href", node.destination), output.consumer).visitChildren(node) {
+        node.title?.let { attributes["title"] = node.title }
     }
 
     override fun visit(node: ListItem) = LI(attributesMapOf(), output.consumer).visitChildren(node)
 
-    override fun visit(node: OrderedList) {
-        val attrs = when {
-            node.startNumber != 1 -> attributesMapOf("start", node.startNumber.toString())
-            else -> attributesMapOf()
-        }
-
-        OL(attrs, output.consumer).visitChildren(node)
+    override fun visit(node: OrderedList) = OL(attributesMapOf(), output.consumer).visitChildren(node) {
+        node.startNumber.takeIf { it != -1 }?.let { attributes["start"] = it.toString() }
     }
 
     override fun visit(node: Paragraph) = P(attributesMapOf(), output.consumer).visitChildren(node)
@@ -174,11 +162,12 @@ class KotlinxHtmlCoreNodeRenderer(
     }
 
     private inline fun <T : HTMLTag> T.visit(node: Node, crossinline block: T.() -> Unit = {}) = kotlinxVisit {
-        context.extendAttributes(node, this)
         block()
+        context.extendAttributes(node, this)
     }
 
-    private fun <T : HTMLTag> T.visitChildren(node: Node) = kotlinxVisit {
+    private inline fun <T : HTMLTag> T.visitChildren(node: Node, crossinline block: T.() -> Unit = {}) = kotlinxVisit {
+        block()
         context.extendAttributes(node, this)
         this@KotlinxHtmlCoreNodeRenderer.visitChildren(node)
     }

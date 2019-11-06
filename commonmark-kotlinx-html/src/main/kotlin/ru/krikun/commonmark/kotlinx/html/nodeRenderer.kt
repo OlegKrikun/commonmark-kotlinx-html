@@ -66,7 +66,7 @@ interface KotlinxHtmlNodeRendererContext {
     }
 }
 
-class KotlinxHtmlCoreNodeRenderer(
+internal class KotlinxHtmlCoreNodeRenderer(
     private val context: KotlinxHtmlNodeRendererContext
 ) : AbstractVisitor(), NodeRenderer {
     private val consumer = context.output

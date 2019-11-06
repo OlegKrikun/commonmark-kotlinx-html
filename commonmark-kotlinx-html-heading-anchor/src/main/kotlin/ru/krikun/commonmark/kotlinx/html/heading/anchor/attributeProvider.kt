@@ -9,7 +9,7 @@ import org.commonmark.node.Node
 import org.commonmark.node.Text
 import ru.krikun.commonmark.kotlinx.html.KotlinxHtmlAttributeProvider
 
-class HeadingAnchorKotlinxHtmlAttributeProvider(
+internal class HeadingAnchorKotlinxHtmlAttributeProvider(
     defaultId: String,
     prefix: String,
     suffix: String

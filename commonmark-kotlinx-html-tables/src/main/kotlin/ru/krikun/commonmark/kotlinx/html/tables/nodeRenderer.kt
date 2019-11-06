@@ -18,7 +18,7 @@ import org.commonmark.node.Node
 import org.commonmark.renderer.NodeRenderer
 import ru.krikun.commonmark.kotlinx.html.KotlinxHtmlNodeRendererContext
 
-class TablesKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeRendererContext) : NodeRenderer {
+internal class TablesKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeRendererContext) : NodeRenderer {
     private val consumer = context.output
 
     override fun getNodeTypes() = setOf(

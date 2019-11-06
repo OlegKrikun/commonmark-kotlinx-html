@@ -8,7 +8,9 @@ import org.commonmark.node.Node
 import org.commonmark.renderer.NodeRenderer
 import ru.krikun.commonmark.kotlinx.html.KotlinxHtmlNodeRendererContext
 
-class StrikethroughKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeRendererContext) : NodeRenderer {
+internal class StrikethroughKotlinxHtmlNodeRenderer(
+    private val context: KotlinxHtmlNodeRendererContext
+) : NodeRenderer {
     private val consumer = context.output
 
     override fun getNodeTypes() = setOf<Class<out Node>>(Strikethrough::class.java)

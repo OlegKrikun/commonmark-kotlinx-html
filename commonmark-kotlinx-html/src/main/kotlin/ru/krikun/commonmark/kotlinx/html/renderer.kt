@@ -1,7 +1,6 @@
 package ru.krikun.commonmark.kotlinx.html
 
 import kotlinx.html.HTMLTag
-import kotlinx.html.Tag
 import kotlinx.html.TagConsumer
 import org.commonmark.Extension
 import org.commonmark.internal.renderer.NodeRendererMap
@@ -58,8 +57,3 @@ class KotlinxHtmlRenderer private constructor(builder: Builder) {
         override fun extendAttributes(node: Node, tag: HTMLTag) = attributeProviderList.forEach { it.extend(node, tag) }
     }
 }
-
-fun Tag.render(
-    node: Node,
-    renderer: KotlinxHtmlRenderer = KotlinxHtmlRenderer.Builder().build()
-) = renderer.render(node, consumer)

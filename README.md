@@ -30,7 +30,7 @@ dependencies {
 createHTML().html {
     body {
         val document: Document = ... // Parse document using commonmark-java parser.
-        val renderer = KotlinxHtmlRenderer.Builder().build()
+        val renderer = buildKotlinxHtmlRenderer()
 
         renderer.render(document, stream)
     }

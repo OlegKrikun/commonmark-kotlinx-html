@@ -54,7 +54,7 @@ class KotlinxHtmlRenderer private constructor(builder: Builder) {
 
         override fun render(node: Node) = nodeRendererMap.render(node)
 
-        override fun extendAttributes(node: Node, tag: HTMLTag) = attributeProviderList.forEach { it(node, tag) }
+        override fun extendAttributes(node: Node, tag: HTMLTag) = attributeProviderList.forEach { it.extend(node, tag) }
     }
 }
 

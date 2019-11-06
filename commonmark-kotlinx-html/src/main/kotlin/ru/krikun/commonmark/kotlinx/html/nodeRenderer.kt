@@ -51,8 +51,19 @@ typealias KotlinxHtmlNodeRendererFactory = (context: KotlinxHtmlNodeRendererCont
 
 interface KotlinxHtmlNodeRendererContext {
     val output: TagConsumer<*>
-    fun render(node: Node)
+
     fun extendAttributes(node: Node, tag: HTMLTag)
+
+    fun render(node: Node)
+
+    fun renderChildren(parent: Node) {
+        var node = parent.firstChild
+        while (node != null) {
+            val next = node.next
+            render(node)
+            node = next
+        }
+    }
 }
 
 class KotlinxHtmlCoreNodeRenderer(
@@ -152,14 +163,7 @@ class KotlinxHtmlCoreNodeRenderer(
 
     override fun visit(node: Text) = consumer.onTagContent(node.literal)
 
-    override fun visitChildren(parent: Node) {
-        var node = parent.firstChild
-        while (node != null) {
-            val next = node.next
-            context.render(node)
-            node = next
-        }
-    }
+    override fun visitChildren(parent: Node) = context.renderChildren(parent)
 
     private inline fun <T : HTMLTag> T.visit(node: Node, crossinline block: T.() -> Unit = {}) = kotlinxVisit {
         block()
@@ -169,7 +173,7 @@ class KotlinxHtmlCoreNodeRenderer(
     private inline fun <T : HTMLTag> T.visitChildren(node: Node, crossinline block: T.() -> Unit = {}) = kotlinxVisit {
         block()
         context.extendAttributes(node, this)
-        this@KotlinxHtmlCoreNodeRenderer.visitChildren(node)
+        context.renderChildren(node)
     }
 
     private fun FencedCodeBlock.language() = info.takeIf { !it.isNullOrEmpty() }?.let {

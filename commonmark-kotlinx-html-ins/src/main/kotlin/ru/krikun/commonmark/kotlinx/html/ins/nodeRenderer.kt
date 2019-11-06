@@ -15,15 +15,6 @@ class InsKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeRendererCon
 
     override fun render(node: Node) = INS(attributesMapOf(), consumer).visit {
         context.extendAttributes(node, this)
-        renderChildren(node)
-    }
-
-    private fun renderChildren(parent: Node) {
-        var node = parent.firstChild
-        while (node != null) {
-            val next = node.next
-            context.render(node)
-            node = next
-        }
+        context.renderChildren(node)
     }
 }

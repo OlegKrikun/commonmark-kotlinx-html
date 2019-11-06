@@ -15,15 +15,6 @@ class StrikethroughKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeR
 
     override fun render(node: Node) = DEL(attributesMapOf(), consumer).visit {
         context.extendAttributes(node, this)
-        renderChildren(node)
-    }
-
-    private fun renderChildren(parent: Node) {
-        var node = parent.firstChild
-        while (node != null) {
-            val next = node.next
-            context.render(node)
-            node = next
-        }
+        context.renderChildren(node)
     }
 }

@@ -41,22 +41,22 @@ class TablesKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeRenderer
 
     private fun table(node: TableBlock) = TABLE(attributesMapOf(), consumer).visit {
         context.extendAttributes(node, this)
-        renderChildren(node)
+        context.renderChildren(node)
     }
 
     private fun head(node: TableHead) = THEAD(attributesMapOf(), consumer).visit {
         context.extendAttributes(node, this)
-        renderChildren(node)
+        context.renderChildren(node)
     }
 
     private fun body(node: TableBody) = TBODY(attributesMapOf(), consumer).visit {
         context.extendAttributes(node, this)
-        renderChildren(node)
+        context.renderChildren(node)
     }
 
     private fun row(node: TableRow) = TR(attributesMapOf(), consumer).visit {
         context.extendAttributes(node, this)
-        renderChildren(node)
+        context.renderChildren(node)
     }
 
     private fun cell(node: TableCell) = when {
@@ -65,7 +65,7 @@ class TablesKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeRenderer
     }.visit {
         node.alignment?.let { attributes["align"] = node.alignment.value }
         context.extendAttributes(node, this as HTMLTag)
-        renderChildren(node)
+        context.renderChildren(node)
     }
 
     private val TableCell.Alignment.value
@@ -75,13 +75,4 @@ class TablesKotlinxHtmlNodeRenderer(private val context: KotlinxHtmlNodeRenderer
             TableCell.Alignment.RIGHT -> "right"
             else -> error("unknown alignment: $this")
         }
-
-    private fun renderChildren(parent: Node) {
-        var node = parent.firstChild
-        while (node != null) {
-            val next = node.next
-            context.render(node)
-            node = next
-        }
-    }
 }

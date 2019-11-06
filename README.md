@@ -2,7 +2,7 @@
 
 Small library that provides an ability to render [commonmark-java](https://github.com/atlassian/commonmark-java) parsing result into [kotlinx.html](https://github.com/Kotlin/kotlinx.html) stream
 
-[![Download](https://api.bintray.com/packages/olegkrikun/maven/kotlinx-html/images/download.svg)](https://bintray.com/olegkrikun/maven/kotlinx-html/_latestVersion)
+[![Download](https://api.bintray.com/packages/olegkrikun/maven/commonmark-kotlinx-html/images/download.svg)](https://bintray.com/olegkrikun/maven/commonmark-kotlinx-html/_latestVersion)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.3.50-orange.svg)](https://kotlinlang.org/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-green.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 
@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation("ru.krikun.commonmark:kotlinx-html:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html:0.0.2")
 }
 ```
 
@@ -57,7 +57,7 @@ Use `HeadingAnchorKotlinxHtmlExtension`
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:kotlinx-html-heading-anchor:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-heading-anchor:0.0.2")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#heading-anchor).
@@ -70,7 +70,7 @@ Use `InsKotlinxHtmlExtension`
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:kotlinx-html-ins:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-ins:0.0.2")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#ins).
@@ -84,7 +84,7 @@ Use `StrikethroughKotlinxHtmlExtension`.
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:kotlinx-html-strikethrough:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-strikethrough:0.0.2")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#strikethrough).
@@ -97,7 +97,7 @@ Use `TablesKotlinxHtmlExtension`
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:kotlinx-html-tables:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-tables:0.0.2")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#tables).

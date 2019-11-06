@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation("ru.krikun.commonmark:commonmark-kotlinx-html:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html:0.0.3")
 }
 ```
 
@@ -57,7 +57,7 @@ Use `HeadingAnchorKotlinxHtmlExtension`
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-heading-anchor:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-heading-anchor:0.0.3")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#heading-anchor).
@@ -70,7 +70,7 @@ Use `InsKotlinxHtmlExtension`
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-ins:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-ins:0.0.3")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#ins).
@@ -84,7 +84,7 @@ Use `StrikethroughKotlinxHtmlExtension`.
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-strikethrough:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-strikethrough:0.0.3")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#strikethrough).
@@ -97,7 +97,7 @@ Use `TablesKotlinxHtmlExtension`
 
 ```kotlin
 dependencies {
-    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-tables:0.0.2")
+    implementation("ru.krikun.commonmark:commonmark-kotlinx-html-tables:0.0.3")
 }
 ```
 Also, see `commonmark-java` [description](https://github.com/atlassian/commonmark-java#tables).

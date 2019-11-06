@@ -1,26 +1,27 @@
 package ru.krikun.commonmark.kotlinx.html
 
 import kotlinx.html.A
+import kotlinx.html.BLOCKQUOTE
+import kotlinx.html.BR
+import kotlinx.html.CODE
+import kotlinx.html.EM
 import kotlinx.html.FlowContent
+import kotlinx.html.H1
+import kotlinx.html.H2
+import kotlinx.html.H3
+import kotlinx.html.H4
+import kotlinx.html.H5
+import kotlinx.html.H6
+import kotlinx.html.HR
+import kotlinx.html.HTMLTag
 import kotlinx.html.IMG
 import kotlinx.html.LI
 import kotlinx.html.OL
+import kotlinx.html.P
+import kotlinx.html.PRE
+import kotlinx.html.STRONG
+import kotlinx.html.UL
 import kotlinx.html.attributesMapOf
-import kotlinx.html.blockQuote
-import kotlinx.html.br
-import kotlinx.html.code
-import kotlinx.html.em
-import kotlinx.html.h1
-import kotlinx.html.h2
-import kotlinx.html.h3
-import kotlinx.html.h4
-import kotlinx.html.h5
-import kotlinx.html.h6
-import kotlinx.html.hr
-import kotlinx.html.p
-import kotlinx.html.pre
-import kotlinx.html.strong
-import kotlinx.html.ul
 import kotlinx.html.visit
 import org.commonmark.node.AbstractVisitor
 import org.commonmark.node.BlockQuote
@@ -83,38 +84,40 @@ class KotlinxHtmlCoreNodeRenderer(
 
     override fun render(node: Node) = node.accept(this)
 
-    override fun visit(blockQuote: BlockQuote) = output.blockQuote { visitChildren(blockQuote) }
+    override fun visit(blockQuote: BlockQuote) = BLOCKQUOTE(attributesMapOf(), output.consumer).visit {
+        visitChildren(blockQuote)
+    }
 
-    override fun visit(bulletList: BulletList) = output.ul { visitChildren(bulletList) }
+    override fun visit(bulletList: BulletList) = UL(attributesMapOf(), output.consumer).visit {
+        visitChildren(bulletList)
+    }
 
-    override fun visit(code: Code) = output.code { +code.literal }
+    override fun visit(code: Code) = CODE(attributesMapOf(), output.consumer).visit { +code.literal }
 
     override fun visit(document: Document) = visitChildren(document)
 
-    override fun visit(emphasis: Emphasis) = output.em { visitChildren(emphasis) }
+    override fun visit(emphasis: Emphasis) = EM(attributesMapOf(), output.consumer).visit { visitChildren(emphasis) }
 
-    override fun visit(fencedCodeBlock: FencedCodeBlock) = output.pre {
-        val lang = fencedCodeBlock.language()
-        if (lang != null) {
-            code(classes = lang) { +fencedCodeBlock.literal }
-        } else {
-            code { +fencedCodeBlock.literal }
-        }
+    override fun visit(fencedCodeBlock: FencedCodeBlock) = PRE(attributesMapOf(), output.consumer).visit {
+        when (val lang = fencedCodeBlock.language()) {
+            null -> CODE(attributesMapOf(), output.consumer)
+            else -> CODE(attributesMapOf("class", lang), output.consumer)
+        }.visit { +fencedCodeBlock.literal }
     }
 
-    override fun visit(hardLineBreak: HardLineBreak) = output.br()
+    override fun visit(hardLineBreak: HardLineBreak) = BR(attributesMapOf(), output.consumer).visit {}
 
     override fun visit(heading: Heading) = when (heading.level) {
-        1 -> output.h1 { visitChildren(heading) }
-        2 -> output.h2 { visitChildren(heading) }
-        3 -> output.h3 { visitChildren(heading) }
-        4 -> output.h4 { visitChildren(heading) }
-        5 -> output.h5 { visitChildren(heading) }
-        6 -> output.h6 { visitChildren(heading) }
+        1 -> H1(attributesMapOf(), output.consumer)
+        2 -> H2(attributesMapOf(), output.consumer)
+        3 -> H3(attributesMapOf(), output.consumer)
+        4 -> H4(attributesMapOf(), output.consumer)
+        5 -> H5(attributesMapOf(), output.consumer)
+        6 -> H6(attributesMapOf(), output.consumer)
         else -> error("unsupported heading: ${heading.level}")
-    }
+    }.visit { visitChildren(heading) }
 
-    override fun visit(thematicBreak: ThematicBreak) = output.hr()
+    override fun visit(thematicBreak: ThematicBreak) = HR(attributesMapOf(), output.consumer).visit {}
 
     override fun visit(htmlInline: HtmlInline) = output.text(htmlInline.literal)
 
@@ -132,7 +135,9 @@ class KotlinxHtmlCoreNodeRenderer(
         IMG(attrs, output.consumer).visit {}
     }
 
-    override fun visit(indentedCodeBlock: IndentedCodeBlock) = output.pre { code { +indentedCodeBlock.literal } }
+    override fun visit(indentedCodeBlock: IndentedCodeBlock) = PRE(attributesMapOf(), output.consumer).visit {
+        CODE(attributesMapOf(), output.consumer).visit { +indentedCodeBlock.literal }
+    }
 
     override fun visit(link: Link) {
         val attrs = when {
@@ -154,11 +159,13 @@ class KotlinxHtmlCoreNodeRenderer(
         OL(attrs, output.consumer).visit { visitChildren(orderedList) }
     }
 
-    override fun visit(paragraph: Paragraph) = output.p { visitChildren(paragraph) }
+    override fun visit(paragraph: Paragraph) = P(attributesMapOf(), output.consumer).visit { visitChildren(paragraph) }
 
     override fun visit(softLineBreak: SoftLineBreak) = output.text("\n")
 
-    override fun visit(strongEmphasis: StrongEmphasis) = output.strong { visitChildren(strongEmphasis) }
+    override fun visit(strongEmphasis: StrongEmphasis) = STRONG(attributesMapOf(), output.consumer).visit {
+        visitChildren(strongEmphasis)
+    }
 
     override fun visit(text: Text) = output.text(text.literal)
 

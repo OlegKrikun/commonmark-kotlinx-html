@@ -16,7 +16,7 @@ val bintrayDryRun = properties.getProperty("dryRun") == "true"
 
 subprojects
     .onEach { it.repositories { jcenter() } }
-    .filter { it.name != "kotlinx-html-test" }
+    .filter { it.name != "commonmark-kotlinx-html-test" }
     .forEachAfterEvaluate { subproject ->
         subproject.group = group
         subproject.version = version

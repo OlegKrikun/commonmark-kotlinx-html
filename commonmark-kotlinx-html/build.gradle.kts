@@ -8,5 +8,5 @@ dependencies {
 
     implementation("com.atlassian.commonmark:commonmark:0.13.0")
 
-    testImplementation(project(":kotlinx-html-test"))
+    testImplementation(project(":commonmark-kotlinx-html-test"))
 }

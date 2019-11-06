@@ -1,10 +1,10 @@
 include(
-    "kotlinx-html",
-    "kotlinx-html-heading-anchor",
-    "kotlinx-html-ins",
-    "kotlinx-html-strikethrough",
-    "kotlinx-html-tables",
-    "kotlinx-html-test"
+    "commonmark-kotlinx-html",
+    "commonmark-kotlinx-html-heading-anchor",
+    "commonmark-kotlinx-html-ins",
+    "commonmark-kotlinx-html-strikethrough",
+    "commonmark-kotlinx-html-tables",
+    "commonmark-kotlinx-html-test"
 )
 
-rootProject.name = "commonmark-kotlinx-html"
+rootProject.name = "commonmark-kotlinx-html-parent"

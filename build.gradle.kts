@@ -60,3 +60,5 @@ val Project.sourceSets get() = the<JavaPluginConvention>().sourceSets
 fun Iterable<Project>.forEachAfterEvaluate(action: (Project) -> Unit) = forEach { it.afterEvaluate(action) }
 
 fun properties(path: String) = Properties().apply { file(path).inputStream().use { load(it) } }
+
+tasks.wrapper { distributionType = Wrapper.DistributionType.ALL }

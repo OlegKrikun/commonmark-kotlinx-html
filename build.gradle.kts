@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "ru.krikun.commonmark"
-version = "0.1.0"
+version = "0.1.1"
 
 val properties = properties("bintray.properties")
 val bintrayUser: String = properties.getProperty("user")

@@ -2,7 +2,7 @@ import com.jfrog.bintray.gradle.BintrayExtension
 import java.util.Properties
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.60" apply false
+    id("org.jetbrains.kotlin.jvm") version "1.3.61" apply false
     id("com.jfrog.bintray") version "1.8.4" apply false
 }
 

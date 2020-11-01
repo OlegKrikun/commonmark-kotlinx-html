@@ -3,7 +3,7 @@
 Small library that provides an ability to render [commonmark-java](https://github.com/atlassian/commonmark-java) parsing result into [kotlinx.html](https://github.com/Kotlin/kotlinx.html) stream
 
 [![Download](https://api.bintray.com/packages/olegkrikun/maven/commonmark-kotlinx-html/images/download.svg)](https://bintray.com/olegkrikun/maven/commonmark-kotlinx-html/_latestVersion)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.3.61-orange.svg)](https://kotlinlang.org/)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.4.10-orange.svg)](https://kotlinlang.org/)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-green.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 
 ## KotlinxHtmlRenderer
@@ -108,9 +108,9 @@ Also, see `commonmark-java` [description](https://github.com/atlassian/commonmar
 ### Dependencies
 Dependency      | Version
 --------------- | :----:
-kotlin-jvm      | 1.3.61
-kotlinx.html    | 0.6.12
-commonmark-java | 0.13.1
+kotlin-jvm      | 1.4.10
+kotlinx.html    | 0.7.2
+commonmark-java | 0.15.2
 
 ## License
 
